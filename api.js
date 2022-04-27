@@ -7,7 +7,6 @@ api.use(express.json());
 
 api.get("/notes", (req, res) =>
 {
-    console.log("GET api//notes hit!");
     fs.readFile(__dirname + "/db/db.json", "UTF-8", (err, file) =>
     {
         if(err)
@@ -25,8 +24,7 @@ api.get("/notes", (req, res) =>
 
 api.post("/notes", (req, res) =>
 {
-    console.log("POST api//notes hit!");
-    res.send("Responding to POST!");
+    res.json(req.body);
 })
 
 module.exports = api;
