@@ -1,11 +1,14 @@
 const express = require("express");
 const path = require('path');
+const api = require("./api");
 
 const app = express();
 
 const PORT = process.env.PORT || 3000;
 
 app.use(express.static('public'));
+
+app.use("/api", api);
 
 app.get("/notes", (req, res) =>
 {
