@@ -6,6 +6,7 @@ const api = express.Router();
 
 api.use(express.json());
 
+// Read notes from DB file and send them to client
 api.get("/notes", (req, res) =>
 {
     fs.readFile(__dirname + "/db/db.json", "utf-8", (err, file) =>
@@ -23,6 +24,7 @@ api.get("/notes", (req, res) =>
     });
 });
 
+// Add note to DB file and send back note with UUID added to client
 api.post("/notes", (req, res) =>
 {
     let note = req.body;
@@ -56,6 +58,7 @@ api.post("/notes", (req, res) =>
     });
 });
 
+// Delete (or more specifically, filter out) note with given UUID from DB file
 api.delete("/notes/:id", (req, res) =>
 {
     if(!uuidValidate(req.params.id))
@@ -63,6 +66,7 @@ api.delete("/notes/:id", (req, res) =>
         res.status(500).json("Invalid note ID");
         return;
     }
+    // Another tricky part: read the JSON from the file, filter out any notes with matching UUIDs from the JSON object, and write the JSON back to the file
     fs.readFile(__dirname + "/db/db.json", "utf-8", (error, data) =>
     {
         if(error)
