@@ -49,12 +49,17 @@ api.post("/notes", (req, res) =>
                 }
                 else
                 {
-                    console.log(data);
                     res.json(note);
                 }
             });
         }
     });
-})
+});
+
+api.delete("/notes/:id", (req, res) =>
+{
+    console.log(`DELETE /api/notes/${req.params.id} request received`);
+    res.json(req.body);
+});
 
 module.exports = api;
