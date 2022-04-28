@@ -1,6 +1,6 @@
 const express = require("express");
 const fs = require("fs");
-const { v1: uuidv1 } = require("uuid"); // V1 is a deterministic approach to UUID generation based on MAC address and timestamp
+const { v1: uuidv1, validate: uuidValidate} = require("uuid"); // V1 is a deterministic approach to UUID generation based on MAC address and timestamp
 
 const api = express.Router();
 
@@ -58,6 +58,11 @@ api.post("/notes", (req, res) =>
 
 api.delete("/notes/:id", (req, res) =>
 {
+    if(!uuidValidate(req.params.id))
+    {
+        res.status(500).json("Invalid note ID");
+        return;
+    }
     fs.readFile(__dirname + "/db/db.json", "utf-8", (error, data) =>
     {
         if(error)
