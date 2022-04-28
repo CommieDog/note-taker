@@ -1,5 +1,6 @@
 const express = require("express");
 const fs = require("fs");
+const { v1: uuidv1 } = require("uuid"); // V1 is a deterministic approach to UUID generation based on MAC address and timestamp
 
 const api = express.Router();
 
@@ -24,7 +25,9 @@ api.get("/notes", (req, res) =>
 
 api.post("/notes", (req, res) =>
 {
-    res.json(req.body);
+    let note = req.body;
+    note.id = uuidv1();
+    res.json(note);
 })
 
 module.exports = api;
