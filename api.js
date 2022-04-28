@@ -33,7 +33,7 @@ api.post("/notes", (req, res) =>
         if(error)
         {
             console.error(error);
-            res.json("Error reading note file on server");
+            res.status(500).json("Error reading note file on server");
         }
         else
         {
@@ -45,7 +45,7 @@ api.post("/notes", (req, res) =>
                 if(error)
                 {
                     console.error(error);
-                    res.json("Error saving to note file on server");
+                    res.status(500).json("Error saving to note file on server");
                 }
                 else
                 {
@@ -58,33 +58,27 @@ api.post("/notes", (req, res) =>
 
 api.delete("/notes/:id", (req, res) =>
 {
-    //console.log(`DELETE /api/notes/${req.params.id} request received`);
-    let note = req.body;
-    console.log(`request body: ${note}, re`);
     fs.readFile(__dirname + "/db/db.json", "utf-8", (error, data) =>
     {
         if(error)
         {
             console.error(error);
-            res.json("Error reading note file on server");
+            res.status(500).json("Error reading note file on server");
         }
         else
         {
             data = JSON.parse(data);
-            //data.push(note);
             data = data.filter((item) =>
             {
-                console.log(`checking ${item.id} against ${req.params.id}...`);
                 return item.id !== req.params.id;
             });
-            console.log(data);
             data = JSON.stringify(data);
             fs.writeFile(__dirname + "/db/db.json", data, (error) =>
             {
                 if(error)
                 {
                     console.error(error);
-                    res.json("Error saving to note file on server");
+                    res.status(500).json("Error saving to note file on server");
                 }
                 else
                 {
